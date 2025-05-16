@@ -1,0 +1,75 @@
+networks:
+  # define network
+  Micro_net:
+    name: Micro_net
+    driver: bridge
+
+volumes:
+  #Blind volume for persistance storage
+  mysql_vol:
+
+services:
+  #define service or container
+    
+  mysql:
+    container_name: mysql_db
+    image: mysql:8.0
+    networks:
+      - Micro_net
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_vol:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=12345
+      - MYSQL_DATABASE=MLDataColletion
+    restart: always
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p12345"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  db_init:
+    container_name: db_init
+    image: sarojdockerworkspace/expense-tracker-backend:latest
+    networks:
+      - Micro_net
+    environment:
+      - MYSQL_HOST=mysql
+      - MYSQL_PORT=3306
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=12345
+      - MYSQL_DATABASE=MLDataColletion
+    depends_on:
+      mysql:
+        condition: service_healthy
+    command: sh -c "cd src && npx sequelize db:create && npx sequelize db:migrate"
+    restart: on-failure
+
+  backend_service:
+    container_name: Backend
+    image: sarojdockerworkspace/expense-tracker-backend:latest
+    networks:
+      - Micro_net
+    ports:
+      - "3009:3009"
+    environment:
+      - MYSQL_HOST=mysql
+      - MYSQL_PORT=3306
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=12345
+      - MYSQL_DATABASE=MLDataColletion
+    depends_on:
+      mysql:
+        condition: service_healthy
+      db_init:
+        condition: service_completed_successfully
+
+  frontend:
+    container_name: frontend
+    image: sarojdockerworkspace/expense-tracker-frontend:latest
+    networks:
+      - Micro_net
+    ports:
+      - "5173:5173"
