@@ -17,7 +17,9 @@ pipeline{
 
         stage("Inject Environment Files"){ 
             steps{ 
+                sh "rm -rf environment"
                 sh "mkdir -p environment"
+
 
                 withCredentials( [
                     file(credentialsId: 'env-mysql', variable: 'MYSQL_ENV'),
