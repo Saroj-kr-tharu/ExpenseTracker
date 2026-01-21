@@ -38,8 +38,19 @@ pipeline{
     }
     post{
         success{ 
-            script{ echo "Building Sucessfuly CICD " } 
+            script{ 
+                emailext from: 'sarojc11345@gmail.com',
+                to: 'sarojc11345@gmail.com',
+                body: 'Build success for Demo CICD App',
+                subject: 'Build success for Demo CICD App'
+             } 
             }
-        failure{ script{ echo "Failed Building CICD " } }
+        failure{ 
+            script{   
+                emailext from: 'sarojc11345@gmail.com',
+                to: 'sarojc11345@gmail.com',
+                body: 'Build Failed for Demo CICD App',
+                subject: 'Build Failed for Demo CICD App' 
+            } }
     }
 }
