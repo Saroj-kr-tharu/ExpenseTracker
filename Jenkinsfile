@@ -17,7 +17,7 @@ pipeline{
         stage("Build Docker"){ 
             steps{
                 echo "Building Docker"
-                sh "docker build -t expenseTracker ."
+                sh "docker build -t expense_tracker ."
                 } 
             }
         stage("Docker Push"){ 
@@ -29,15 +29,15 @@ pipeline{
                         usernameVariable:"dockerHubUser" )]
                     ){
                         sh "docker login -u ${env.dockerHubUser} -p ${env.dockerHubPass}"
-                        sh "docker image tag expenseTracker ${env.dockerHubUser}/expenseTracker"
-                        sh "docker push ${env.dockerHubUser}/expenseTracker:latest"
+                        sh "docker image tag expense_tracker ${env.dockerHubUser}/expense_tracker"
+                        sh "docker push ${env.dockerHubUser}/expense_tracker:latest"
                      }
             } 
             }
         stage("Docker  run"){ 
             steps{ 
                 echo "Deploying Docker compose up"
-                sh "docker compose up -d --build expenseTracker"
+                sh "docker compose up -d --build expense_tracker"
              } 
             }
     }
