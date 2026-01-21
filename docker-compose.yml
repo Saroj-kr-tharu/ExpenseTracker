@@ -40,7 +40,7 @@ services:
       - "3009:3009"
     volumes:
       - ./Backend:/developer/backend 
-      - backend_vol:/developer/backend/node_modules
+      -  backend_vol:/developer/backend/node_modules
     env_file:
       - environment/.env.backend
     depends_on:
@@ -48,19 +48,21 @@ services:
         condition: service_healthy
       
 
-  frontend:
+  frontend_service:
     image: sarojdockerworkspace/expense_tracker_frontend:latest
     build: 
-      context: ./ExpenseTracker
+      context: ./frontend
       dockerfile: Dockerfile
-    container_name: frontend
+    container_name: frontend_service
     networks:
       - Micro_net
     ports:
       - "8000:5173"
     volumes:
-      - ./ExpenseTracker:/developer/fortend
-      - frontend_vol:/developer/fortend/node_modules
+      - ./frontend:/developer/fortend
+      -  frontend_vol:/developer/fortend/node_modules
+    env_file:
+      - environment/.env.fortend
     depends_on:
       mysql: 
         condition: service_healthy
