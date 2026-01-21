@@ -41,16 +41,16 @@ pipeline{
             script{ 
                 emailext from: 'sarojc11345@gmail.com',
                 to: 'sarojc11345@gmail.com',
-                body: 'Build success for Demo CICD App',
-                subject: 'Build success for Demo CICD App'
+                body: 'Build success for ExpenseTracker CICD App',
+                subject: 'Build success for ExpenseTracker CICD App'
              } 
             }
         failure{ 
             script{   
                 emailext from: 'sarojc11345@gmail.com',
                 to: 'sarojc11345@gmail.com',
-                body: 'Build Failed for Demo CICD App',
-                subject: 'Build Failed for Demo CICD App' 
+                body: 'Build Failed for ExpenseTracker CICD App',
+                subject: 'Build Failed for ExpenseTracker CICD App' 
             } }
     }
 }
