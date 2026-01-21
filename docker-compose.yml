@@ -31,7 +31,7 @@ services:
     image: sarojdockerworkspace/expense_tracker_backend:latest
     build: 
       context: ./Backend
-      dockerfile: ./Backend/dockerfile
+      dockerfile: Dockerfile
     container_name: Backend
     networks:
       - Micro_net
@@ -51,7 +51,7 @@ services:
     image: sarojdockerworkspace/expense_tracker_frontend:latest
     build: 
       context: ./ExpenseTracker
-      dockerfile: ./ExpenseTracker/dockerfile
+      dockerfile: Dockerfile
     container_name: frontend
     networks:
       - Micro_net
