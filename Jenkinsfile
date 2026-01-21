@@ -14,30 +14,25 @@ pipeline{
                 sh 'trivy fs . -o results.json'
             } 
         }
-        stage("Build Docker"){ 
-            steps{
-                echo "Building Docker"
-                sh "docker build -t expense_tracker ."
-                } 
-            }
-        stage("Docker Push"){ 
+        
+        stage("Docker build && Push"){ 
             steps{
                 echo "Docker Push Images to docker hub "
-                 withCredentials(  [usernamePassword(
+                sh " docker compose build "
+                withCredentials(  [usernamePassword(
                         credentialsId: "dockerHubCreds",
                         passwordVariable:"dockerHubPass" ,
                         usernameVariable:"dockerHubUser" )]
                     ){
                         sh "docker login -u ${env.dockerHubUser} -p ${env.dockerHubPass}"
-                        sh "docker image tag expense_tracker ${env.dockerHubUser}/expense_tracker"
-                        sh "docker push ${env.dockerHubUser}/expense_tracker:latest"
+                        sh "docker compose push"
                      }
             } 
             }
         stage("Docker  run"){ 
             steps{ 
                 echo "Deploying Docker compose up"
-                sh "docker compose up -d --build expense_tracker"
+                sh "docker compose up  "
              } 
             }
     }
