@@ -14,6 +14,24 @@ pipeline{
                 sh 'trivy fs . -o results.json'
             } 
         }
+
+        stage("Inject Environment Files"){ 
+            steps{ 
+                sh "mkdir -p environment"
+
+                withCredentials( [
+                    file(credentialsId: 'env-mysql', variable: 'MYSQL_ENV'),
+                    file(credentialsId: 'env-backend', variable: 'BACKEND_ENV'),
+                    file(credentialsId: 'env-frontend', variable: 'FRONTEND_ENV')
+                ] ){
+                    sh '''
+                        cp $MYSQL_ENV environment/.env.mysql
+                        cp $BACKEND_ENV environment/.env.backend
+                        cp $FRONTEND_ENV environment/.env.fortend
+                    '''
+                }
+            }
+        }
         
         stage("Docker build && Push"){ 
             steps{
