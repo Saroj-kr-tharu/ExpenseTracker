@@ -4,11 +4,14 @@ FROM node
 WORKDIR /developer/backend
 # working directory define 
 
-COPY . .
-#copy all the file for the host to working directory 
+# Copy the package to install 
+COPY package* ./
 
-RUN npm ci
-#clean install
+#clean install 
+RUN  npm ci 
+
+#copy all the file for the host to working directory 
+COPY . .
 
 CMD [ "npm", "start" ]
 # cmd when container is on 

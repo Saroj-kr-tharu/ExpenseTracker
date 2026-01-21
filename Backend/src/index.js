@@ -13,7 +13,12 @@ const serverSetupAndStart = () => {
 
      app.use(cors({
         origin: function (origin, callback) {
-            const allowedOrigins = ['http://localhost:5173'];
+           const allowedOrigins = [
+            'http://localhost:5173',
+            'http://156.67.110.130:5173', // Removed trailing slash
+            'http://156.67.110.130',      // Added base domain
+            'http://156.67.110.130:3009'  // Added backend URL
+        ];
             
             if (!origin || allowedOrigins.includes(origin)) {
                 callback(null, true);
