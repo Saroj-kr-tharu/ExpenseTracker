@@ -59,7 +59,7 @@ services:
     ports:
       - "8000:5173"
     volumes:
-      - ./Backend:/developer/fortend
+      - ./ExpenseTracker:/developer/fortend
       - frontend_vol:/developer/fortend/node_modules
     depends_on:
       mysql: 
